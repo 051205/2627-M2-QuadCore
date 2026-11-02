@@ -15,7 +15,29 @@ def cargar_nivel(self) -> list[str]:
     # - Comprueba que `self.level_path` existe y es fichero.
     # - Lee su contenido, filtra líneas vacías y valida que todas tienen el mismo ancho.
     # - Guarda el resultado en `self.layout` y devuélvelo.
-    raise NotImplementedError
+    if not self.level_path.is_file():
+        raise FileNotFoundError("No existe el archivo del nivel")
+
+    filas = []
+
+    with open(self.level_path, encoding="utf-8") as f:
+        for linea in f:
+            linea = linea.rstrip("\n\r")
+            if linea.strip():
+                filas.append(linea)
+
+    if not filas:
+        raise ValueError("El nivel está vacío")
+
+    ancho = len(filas[0])
+
+    for fila in filas:
+        if len(fila) != ancho:
+            raise ValueError("Las filas tienen distinta longitud")
+
+    self.layout = filas
+    return self.layout
+
 
 @arkanoid_method
 def preparar_entidades(self) -> None:
@@ -31,7 +53,24 @@ def crear_bloques(self) -> None:
     # - Limpia `self.blocks`, `self.block_colors` y `self.block_symbols`.
     # - Recorre `self.layout` para detectar símbolos de bloque.
     # - Usa `self.calcular_posicion_bloque` y rellena las listas paralelas.
-    raise NotImplementedError
+    self.blocks = []
+    self.block_colors = []
+    self.block_symbols = []
+
+    for num_fila, fila in enumerate(self.layout):
+        for num_columna, simbolo in enumerate(fila):
+            if simbolo == ".":
+                continue
+
+            rectangulo = self.calcular_posicion_bloque(
+                num_fila, num_columna
+            )
+
+            color = self.BLOCK_COLORS[simbolo]
+
+            self.blocks.append(rectangulo)
+            self.block_colors.append(color)
+            self.block_symbols.append(simbolo)
 
 @arkanoid_method
 def procesar_input(self) -> None:
