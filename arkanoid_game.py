@@ -42,10 +42,19 @@ def cargar_nivel(self) -> list[str]:
 @arkanoid_method
 def preparar_entidades(self) -> None:
     """Posiciona paleta y bola, y reinicia puntuación y vidas."""
-    # - Ajusta el tamaño de `self.paddle` y céntrala usando `midbottom`.
-    # - Reinicia `self.score`, `self.lives` y `self.end_message`.
-    # - Llama a `self.reiniciar_bola()` para colocar la bola sobre la paleta.
-    raise NotImplementedError
+
+    self.paddle = self.crear_rect(0, 0, *self.PADDLE_SIZE)
+
+    self.paddle.midbottom = (
+        self.SCREEN_WIDTH // 2,
+        self.SCREEN_HEIGHT - self.PADDLE_OFFSET )
+
+    self.score = 0
+    self.lives = 3
+    self.end_message = ""
+
+    self.reiniciar_bola()
+
 
 @arkanoid_method
 def crear_bloques(self) -> None:
@@ -72,13 +81,24 @@ def crear_bloques(self) -> None:
             self.block_colors.append(color)
             self.block_symbols.append(simbolo)
 
+
 @arkanoid_method
 def procesar_input(self) -> None:
     """Gestiona la entrada de teclado para mover la paleta."""
-    # - Obtén el estado de teclas con `self.obtener_estado_teclas()`.
-    # - Desplaza la paleta con `self.PADDLE_SPEED` si se pulsan las teclas izquierda/derecha.
-    # - Limita la posición para que no salga de la pantalla.
-    raise NotImplementedError
+
+    teclas = self.obtener_estado_teclas()
+
+    if teclas[self.KEY_LEFT] or teclas[self.KEY_A]:
+        self.paddle.x -= self.PADDLE_SPEED
+
+    if teclas[self.KEY_RIGHT] or teclas[self.KEY_D]:
+        self.paddle.x += self.PADDLE_SPEED
+
+    if self.paddle.left < 0:
+        self.paddle.left = 0
+
+    if self.paddle.right > self.SCREEN_WIDTH:
+        self.paddle.right = self.SCREEN_WIDTH
 
 @arkanoid_method
 def actualizar_bola(self) -> None:
