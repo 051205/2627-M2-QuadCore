@@ -155,18 +155,96 @@ def actualizar_bola(self) -> None:
 @arkanoid_method
 def dibujar_escena(self) -> None:
     """Renderiza fondo, bloques, paleta, bola y HUD."""
-    # - Rellena el fondo y dibuja cada bloque con `self.dibujar_rectangulo`.
-    # - Pinta la paleta y la bola con las utilidades proporcionadas.
-    # - Muestra puntuación, vidas y mensajes usando `self.dibujar_texto`.
-    raise NotImplementedError
+
+    # Dibujar el fondo
+    self.screen.fill(self.BACKGROUND_COLOR)
+
+    # Dibujar los bloques
+    for i in range(len(self.blocks)):
+        self.dibujar_rectangulo(
+            self.blocks[i],
+            self.block_colors[i]
+        )
+
+    # Dibujar la paleta
+    self.dibujar_rectangulo(
+        self.paddle,
+        self.PADDLE_COLOR
+    )
+
+    # Dibujar la bola
+    self.dibujar_circulo(
+        (int(self.ball_pos.x), int(self.ball_pos.y)),
+        self.BALL_RADIUS,
+        self.BALL_COLOR
+    )
+
+    # Dibujar puntuación y vidas
+    self.dibujar_texto(
+        f"Puntuacion: {self.score}",
+        (20, 20)
+    )
+
+    self.dibujar_texto(
+        f"Vidas: {self.lives}",
+        (650, 20)
+    )
+
+    # Dibujar mensaje final si existe
+    if self.end_message:
+        self.dibujar_texto(
+            self.end_message,
+            (250, 280),
+            grande=True
+        )
+
+
 
 @arkanoid_method
 def run(self) -> None:
     """Ejecuta el bucle principal del juego."""
-    # - Inicializa recursos (`self.inicializar_pygame`, `self.cargar_nivel`, etc.).
-    # - Procesa eventos de `self.iterar_eventos()` y llama a los métodos de actualización/dibujo.
-    # - Refresca la pantalla con `self.actualizar_pantalla()` y cierra con `self.finalizar_pygame()`.
-    raise NotImplementedError
+
+    # Inicializar pygame
+    self.inicializar_pygame()
+
+    try:
+        # Preparar el juego
+        self.cargar_nivel()
+        self.preparar_entidades()
+        self.crear_bloques()
+
+        self.running = True
+
+        # Bucle principal
+        while self.running:
+
+            # Comprobar eventos
+            for evento in self.iterar_eventos():
+
+                if evento.type == self.EVENT_QUIT:
+                    self.running = False
+
+                elif evento.type == self.EVENT_KEYDOWN:
+                    if evento.key == self.KEY_ESCAPE:
+                        self.running = False
+
+            # Actualizar el juego si sigue activo
+            if self.running:
+                self.procesar_input()
+                self.actualizar_bola()
+
+            # Dibujar la escena
+            self.dibujar_escena()
+
+            # Actualizar pantalla
+            self.actualizar_pantalla()
+
+            # Controlar FPS
+            self.clock.tick(self.FPS)
+
+    finally:
+        # Cerrar pygame
+        self.finalizar_pygame()
 
 
 def main() -> None:
