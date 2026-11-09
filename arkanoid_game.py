@@ -102,14 +102,55 @@ def procesar_input(self) -> None:
     if self.paddle.right < self.SCREEN_WIDTH:
         self.paddle.rigth = self.SCREEN_WIDTH
     
-
 @arkanoid_method
 def actualizar_bola(self) -> None:
     """Actualiza la posición de la bola y resuelve colisiones."""
-    # - Suma `self.ball_velocity` a `self.ball_pos` y genera `ball_rect` con `self.obtener_rect_bola()`.
-    # - Gestiona rebotes con paredes, paleta y bloques, modificando velocidad y puntuación.
-    # - Controla fin de nivel cuando no queden bloques y resta vidas si la bola cae.
-    raise NotImplementedError
+    # 1. Mover la bola y obtener su rectángulo de colisión
+    self.ball_pos += self.ball_velocity
+    ball_rect = self.obtener_rect_bola()
+
+    # 2. Rebote en paredes laterales (izquierda y derecha)
+    if ball_rect.left <= 0 or ball_rect.right >= self.SCREEN_WIDTH:
+        self.ball_velocity.x = -self.ball_velocity.x
+
+    # 3. Rebote en el techo
+    if ball_rect.top <= 0:
+        self.ball_velocity.y = -self.ball_velocity.y
+
+    # 4. Si la bola cae por la parte inferior de la pantalla
+    if ball_rect.top >= self.SCREEN_HEIGHT:
+        self.lives -= 1
+        if self.lives <= 0:
+            self.running = False
+            self.end_message = "¡Game Over!"
+        else:
+            self.reiniciar_bola()
+        return
+
+    # 5. Rebote en la paleta (solo si la bola va hacia abajo)
+    if ball_rect.colliderect(self.paddle) and self.ball_velocity.y > 0:
+        self.ball_velocity.y = -self.ball_velocity.y
+
+    # 6. Colisión con los bloques
+    for i in range(len(self.blocks)):
+        if ball_rect.colliderect(self.blocks[i]):
+            # Obtener el símbolo del bloque y sumar la puntuación
+            simbolo = self.block_symbols[i]
+            self.score += self.BLOCK_POINTS[simbolo]
+
+            # Eliminar el bloque de las listas paralelas
+            self.blocks.pop(i)
+            self.block_colors.pop(i)
+            self.block_symbols.pop(i)
+
+            # Invertir la dirección vertical de la bola y salir del bucle
+            self.ball_velocity.y = -self.ball_velocity.y
+            break
+
+    # 7. Comprobar si se han destruido todos los bloques
+    if len(self.blocks) == 0:
+        self.running = False
+        self.end_message = "¡Has ganado!"
 
 @arkanoid_method
 def dibujar_escena(self) -> None:
