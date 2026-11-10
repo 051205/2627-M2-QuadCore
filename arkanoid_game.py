@@ -178,7 +178,7 @@ def dibujar_escena(self) -> None:
 
     # Dibujar puntuación y vidas
     self.dibujar_texto(
-        f"Puntuacion: {self.score}",
+        f"Puntuación: {self.score}",
         (20, 20)
     )
 
@@ -186,6 +186,11 @@ def dibujar_escena(self) -> None:
         f"Vidas: {self.lives}",
         (650, 20)
     )
+
+    self.dibujar_texto(
+    "Mover: flechas / A-D | Salir: ESC",
+    (20, self.SCREEN_HEIGHT - 30)
+)
 
     # Dibujar mensaje final si existe
     if self.end_message:
@@ -238,6 +243,10 @@ def run(self) -> None:
 
             # Controlar FPS
             self.clock.tick(self.FPS)
+
+        #Mostrar resultado durante 3 seg
+        if self.end_message:
+            self.esperar(3000)
 
     finally:
         # Cerrar pygame
