@@ -52,7 +52,7 @@ def preparar_entidades(self) -> None:
     self.lives = 3 
     self.end_message = ""
     
-    self.reiniciar_bola()
+    self.reiniciar_bola((1, -1))
     
 
 
@@ -121,7 +121,7 @@ def actualizar_bola(self) -> None:
             self.running = False
             self.end_message = "¡Game Over!"
         else:
-            self.reiniciar_bola()
+            self.reiniciar_bola((1, -1))
         return
 
     # 5. Rebote en la paleta (solo si la bola va hacia abajo)
