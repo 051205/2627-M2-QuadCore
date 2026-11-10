@@ -116,3 +116,7 @@ Completa los métodos marcados con `TODO` siguiendo el orden propuesto y respeta
 - Control del flujo de juego (inicialización, loop principal y cierre limpio).
 - Gestión de colisiones y actualización de puntuación/vidas.
 - Apartado opcional: se valorará positivamente añadir niveles extra, mejoras visuales o efectos de sonido siempre que no rompan la estructura base.
+
+### Uso de inteligencia artificial
+
+Hemos utilizado IA como herramienta de apoyo para resolver dudas y revisar el código durante el desarrollo del proyecto. Hemos comprobado su funcionamiento y entendemos las soluciones implementadas.
