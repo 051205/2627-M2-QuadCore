@@ -31,6 +31,15 @@ control.
 > Trabajad el proyecto vosotros. Lo que no sepáis escribir sin ayuda no lo sabréis escribir
 > en el laboratorio, que es donde se pone la nota.
 
+## Integrantes del grupo
+
+**Grupo:** QuadCore
+
+- Claudia Santamaría Pérez
+- Beatriz Vicente Jerez
+- Laura Romero Ocaña
+- Inés Muñóz Mérida
+
 ### Uso de inteligencia artificial
 
 Se **desaconseja** usar IA generativa para resolver los TODO. Antes de recurrir a ella,
