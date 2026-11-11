@@ -271,5 +271,12 @@ def main() -> None:
     game.run()
 
 
+
 if __name__ == "__main__":
+    import os
+
+    if os.name == "nt" and "SDL_VIDEODRIVER" not in os.environ:
+        os.environ["SDL_VIDEODRIVER"] = "windows"
+
     main()
+
