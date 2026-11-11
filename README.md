@@ -119,4 +119,4 @@ Completa los métodos marcados con `TODO` siguiendo el orden propuesto y respeta
 
 ### Uso de inteligencia artificial
 
-Hemos utilizado IA como herramienta de apoyo para resolver dudas y revisar el código durante el desarrollo del proyecto. Hemos comprobado su funcionamiento y entendemos las soluciones implementadas.
+Hemos utilizado IA como herramienta de apoyo para resolver dudas, revisar el código y solucionar un problema de visualización del juego en Windows. Hemos comprobado su funcionamiento y entendemos los cambios realizados.
